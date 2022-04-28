@@ -17,7 +17,9 @@ function getSeason(date) {
   if( arguments.length == 0) {
     return 'Unable to determine the time of year!'
   }
-
+  if (!date.getTime) {
+    throw new Error('Invalid date!');
+  }
 
 
     if (date.getMonth() >= 0  && date.getMonth() <= 1 || date.getMonth() == 11 ){
@@ -32,7 +34,7 @@ function getSeason(date) {
     else if (date.getMonth() >= 8 && date.getMonth() <= 10){
       return 'autumn'
     }
-
+    
 }
 
 module.exports = {
