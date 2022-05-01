@@ -77,7 +77,6 @@ const { NotImplementedError } = require('../extensions/index.js');
   return rez
 
  }
-
 module.exports = {
   transform
 };
