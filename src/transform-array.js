@@ -24,58 +24,62 @@ const { NotImplementedError } = require('../extensions/index.js');
   if(arr.length === 0) {
     return rez
   }
-  let array = arr
 
-  array.map(el => {
-    if(el !== '--discard-prev' && el !== '--double-prev' && 
-       el !== '--double-next' && el !== '--discard-next'){
-      rez.push(el)
+if (arr.includes('--discard-next') && (arr.includes('--double-prev') || arr.includes('--discard-prev'))) {
+    console.log('hello')
+    for(let i = 0; i < arr.length; i++){
+    if(arr[i] === '--double-next' || (arr[i] === '--double-prev' || arr[i] === '--discard-prev')) {
+            rez.pop();
+            rez.pop()
+    } else {
+       rez.push(arr[i]) 
     }
-  })
-  
-  if(array.length === rez.length) {
-    return rez
-  }
-      
-  if (arr[0] === '--discard-prev' || arr[0] === '--double-prev') {
-    array = arr.slice(1)
-    rez = array
-    console.log('rez', rez)
-    return rez
-  }
-  if (array[array.length-1] === '--double-next' 
-      || array[array.length-1] === '--discard-next') {
-        console.log('i m here')
-    array = arr.slice(0, arr.length - 1)
-    rez = array
-    return rez
-  }
-  for (let i = 0; i < arr.length; i++){
-    if(arr[i] === '--discard-prev') {
-      array = arr.slice(0, i-1).concat(arr.slice(i+1))
-      console.log('array', array)
-      rez = array
     }
-    if(arr[i] === '--discard-next') {
-      array = arr.slice(0, i).concat(arr.slice(i+2))
-      console.log('arrayNext', array)
-      rez = array
-    }
-    if(arr[i] === '--double-prev') {
-      array = arr.slice(0, i).concat(arr[i-1]).concat(arr.slice(i+1))
-      console.log('arrayDoublePrev', array)
-      rez = array
-    }
+} else if (arr.includes('--double-next') && (arr.includes('--double-prev') || arr.includes('--discard-prev'))) {
+    for(let i = 0; i < arr.length; i++){
+        console.log('privet')
     if(arr[i] === '--double-next') {
-      array = arr.slice(0, i).concat(arr[i+1]).concat(arr.slice(i+1))
-      console.log('arrayDoubleNext', array)
-      rez = array
+            rez.push(arr[i +1])
+    } else if (arr[i] === '--double-prev') {
+        rez.push(arr[i-1])
+    } else if (arr[i] === '--discard-prev') {
+      rez.pop()
+    } else {
+       rez.push(arr[i]) 
     }
-  }
-  console.log(array)
-  console.log('rez', rez)
-  return rez
-
+    }
+} else {
+    for (let i = 0; i < arr.length; i++) {
+    //rez.push(arr[i])
+    if (arr[i] === '--discard-prev' ) {
+        rez.pop()
+    } else {
+        rez.push(arr[i])
+    }
+        if(arr[i] === '--discard-next') {
+        rez.pop();
+        //rez.pop();
+       // rez.push(undefined)
+    }
+    if (arr[i] === '--double-prev') {
+        if (arr[0] === '--double-prev') {
+          rez.pop();
+          continue;
+        }
+        rez.pop()
+        rez.push(arr[i-1])
+    }
+    if (arr[i] === '--double-next') {
+       if(arr[arr.length-1] === '--double-next') {
+          rez.pop()
+    } else {
+       rez.push(arr[i+1]) 
+    }
+    }
+}
+}
+console.log('rez', rez)
+return rez;
  }
 module.exports = {
   transform
